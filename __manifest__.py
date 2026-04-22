@@ -1,6 +1,6 @@
 {
     'name': 'Rapport Cash In/Out PdV',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'category': 'Point of Sale/Reporting',
     'summary': 'Export Excel des mouvements caisse (Cash In/Out) par Point de Vente.',
     'author': 'SOPROMER',

@@ -1,8 +1,5 @@
 import io
 import base64
-from datetime import datetime, time
-
-import pytz
 
 from odoo import fields, models, _
 from odoo.exceptions import UserError
@@ -61,18 +58,11 @@ class PosCashInOutReportWizard(models.TransientModel):
         return ('Autre', 'in' if amount >= 0 else 'out')
 
     def _get_data(self):
-        tz = pytz.timezone(self.env.user.tz or 'Indian/Antananarivo')
-        dt_from = tz.localize(datetime.combine(
-            self.date_from, time.min,
-        )).astimezone(pytz.utc).replace(tzinfo=None)
-        dt_to = tz.localize(datetime.combine(
-            self.date_to, time.max,
-        )).astimezone(pytz.utc).replace(tzinfo=None)
-
+        # am.date est un Date (pas Datetime) → filtrer directement sans conversion TZ
         domain = [
             ('pos_session_id', '!=', False),
-            ('move_id.date', '>=', dt_from.date()),
-            ('move_id.date', '<=', dt_to.date()),
+            ('move_id.date', '>=', self.date_from),
+            ('move_id.date', '<=', self.date_to),
         ]
         if self.pos_config_ids:
             domain.append(('pos_session_id.config_id', 'in', self.pos_config_ids.ids))
